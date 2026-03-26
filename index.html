@@ -10,15 +10,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; overflow: hidden; }
         .dashboard { width: 1600px; height: 800px; background: #f5f5f5; display: grid; grid-template-rows: 106px 1fr; }
-        .kpi-row { display: flex; width: 100%; height: 106px; padding: 10px 8px 0 8px; gap: 0; }
-        .kpi-spacer { width: 50px; flex-shrink: 0; }
-        .kpi-spacer-sm { width: 80px; flex-shrink: 0; }
+        .kpi-row { display: grid; grid-template-columns: 71.5% 28.5%; width: 100%; height: 106px; padding-top: 10px; }
+        .kpi-cards-left { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0 5px 0 48px; align-items: stretch; }
+        .kpi-cards-right { padding: 0 10px 0 5px; }
+        .kpi-col { display: flex; gap: 16px; padding: 0 10px; }
         .kpi-card { flex: 1; background: #f5f5f5; border: 1px solid #e6e6e6; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .kpi-card.first { border-width: 2px; }
         .kpi-title { font-size: 10px; font-weight: 600; text-align: center; color: #333; margin-bottom: 6px; }
         .kpi-value { font-size: 20px; font-weight: bold; color: #3a57a7; text-align: center; }
         .bottom-section { display: grid; grid-template-columns: 71.5% 28.5%; height: 100%; overflow: hidden; }
-        .left-section { display: grid; grid-template-rows: 1fr 1.5fr; grid-template-columns: 1fr 1fr; gap: 0; padding: 15px 5px 15px 15px; height: 100%; }
+        .left-section { display: grid; grid-template-rows: 1fr 1.5fr; grid-template-columns: 1fr 1fr; gap: 0; padding: 15px 5px 15px 48px; height: 100%; }
         .chart-container { background: transparent; padding: 0 10px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
         .chart-container.bt { padding-top: 20px; }
         .chart-title-text { font-size: 9px; color: #666666; text-align: center; margin-bottom: 4px; line-height: 1.3; }
@@ -39,22 +40,26 @@
 <body>
     <div class="dashboard">
         <div class="kpi-row">
-            <div class="kpi-spacer"></div>
-            <div class="kpi-card first">
-                <div class="kpi-title">Lifetime Value</div>
-                <div class="kpi-value" id="kpi-ltv">$1,496</div>
+            <div class="kpi-cards-left">
+                <div class="kpi-col">
+                    <div class="kpi-card first">
+                        <div class="kpi-title">Lifetime Value</div>
+                        <div class="kpi-value" id="kpi-ltv">$1,496</div>
+                    </div>
+                </div>
+                <div class="kpi-col">
+                    <div class="kpi-card">
+                        <div class="kpi-title">Average Efficiency</div>
+                        <div class="kpi-value" id="kpi-eff">0.12%</div>
+                    </div>
+                </div>
             </div>
-            <div class="kpi-spacer-sm"></div>
-            <div class="kpi-card">
-                <div class="kpi-title">Average Efficiency</div>
-                <div class="kpi-value" id="kpi-eff">0.12%</div>
+            <div class="kpi-cards-right">
+                <div class="kpi-card" style="margin:0 10px; height:100%;">
+                    <div class="kpi-title">Platinum Clients Count</div>
+                    <div class="kpi-value" id="kpi-plat">272</div>
+                </div>
             </div>
-            <div class="kpi-spacer-sm"></div>
-            <div class="kpi-card">
-                <div class="kpi-title">Platinum Clients Count</div>
-                <div class="kpi-value" id="kpi-plat">272</div>
-            </div>
-            <div class="kpi-spacer"></div>
         </div>
         <div class="bottom-section">
             <div class="left-section">
@@ -153,7 +158,7 @@ const ROWS = [{"a": 34, "ai": 28696.1344, "ss": 69.8, "pf": 0, "pc": "Occasional
     // ===== CHART 1: Age Purchase Freq =====
     charts.c1 = new Chart(document.getElementById('c1').getContext('2d'), {
         type:'line',
-        data: { labels: D.ages, datasets: [{ data: D.freqValues, borderColor:'#8074a8', backgroundColor:'transparent', borderWidth:2, pointRadius: D.ages.map(a=>freqLabelsOn.has(a)?3:0), pointBackgroundColor:'#8074a8', tension:0.2, fill:false, clip:false }] },
+        data: { labels: D.ages, datasets: [{ data: D.freqValues, borderColor:'#8074a8', backgroundColor:'transparent', borderWidth:2, pointRadius: D.ages.map(a=>freqLabelsOn.has(a)?3:0), pointBackgroundColor:'#8074a8', tension:0.2, fill:false, clip:false, spanGaps:true }] },
         options: {
             responsive:true, maintainAspectRatio:false, animation:{duration:300},
             layout:{padding:{top:18,bottom:18}},
@@ -171,7 +176,7 @@ const ROWS = [{"a": 34, "ai": 28696.1344, "ss": 69.8, "pf": 0, "pc": "Occasional
     // ===== CHART 2: Age Income =====
     charts.c2 = new Chart(document.getElementById('c2').getContext('2d'), {
         type:'line',
-        data: { labels: D.ages, datasets: [{ data: D.incomeValues, borderColor:'#8074a8', backgroundColor:'transparent', borderWidth:2, pointRadius: D.ages.map(a=>incLabelsOn.has(a)?3:0), pointBackgroundColor:'#8074a8', tension:0.2, fill:false, clip:false }] },
+        data: { labels: D.ages, datasets: [{ data: D.incomeValues, borderColor:'#8074a8', backgroundColor:'transparent', borderWidth:2, pointRadius: D.ages.map(a=>incLabelsOn.has(a)?3:0), pointBackgroundColor:'#8074a8', tension:0.2, fill:false, clip:false, spanGaps:true }] },
         options: {
             responsive:true, maintainAspectRatio:false, animation:{duration:300},
             layout:{padding:{top:18,bottom:18}},
