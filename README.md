@@ -1,4 +1,4 @@
-# Customer-Behavioral-Analytics-Segmentation
+# Customer Behavioral Analytics Segmentation
 https://anhvotn.github.io/Customer-Behavioral-Analytics-Segmentation/
 
 
